@@ -1,0 +1,266 @@
+/*********************
+ *      Generic      *
+ *********************/
+
+:root {
+    --unit: calc(0.35vw + 0.65vh);
+
+    --size-maximum-width: 300vw;
+    --size-maximum-height: 300vh;
+
+    --size-number-rows: 3;
+    --size-number-columns: 3;
+
+    --size-generic-padding: calc(10 * var(--unit));
+    --size-quote-padding: calc(5 * var(--unit));
+
+    --size-text-generic: calc(12px + 0.5 * var(--unit));
+    --size-text-quote: calc(6 * var(--unit));
+
+    --color-compass-pointer: rgb(201, 91, 91);
+    
+    --color-nav-link-background-hover: rgb(201, 91, 91);
+    --color-nav-link-background-active: rgb(117, 51, 51);
+    --color-nav-link-background-selected: rgb(156, 66, 66);
+    --color-background-generic: rgb(0, 255, 191);
+
+    --settings-outline-focus-generic: rgb(59, 153, 252) auto 5px;
+}
+
+@font-face {
+    font-family: 'ginora_sansbold';
+    src: url('ginorasans-webfont.woff2') format('woff2'),
+         url('ginorasans-webfont.woff') format('woff');
+}
+
+:root {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+:root::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+
+html * {
+    padding: 0px;
+    margin: 0px;
+}
+
+html {
+    font-family: ginora_sansbold, 'Open Sans', Arial, sans-serif;
+    font-size: var(--size-text-generic);
+
+    background-color: var(--color-background-generic);
+}
+
+.hidden-checkbox {
+    opacity: 0;
+}
+
+.callout {
+
+}
+
+/* If you want to change the size of a grid-item
+/* .quote {
+    grid-column: span 2;
+    grid-row: span 2;
+    scroll-snap-align: start !important;
+} */
+
+.quote .grid-item-inner {
+    font-size: var(--size-text-quote);
+    background-color: black;
+    color: white;
+    letter-spacing: 0.15em;
+    padding: var(--size-quote-padding);
+}
+
+.quote q {
+    display: block;
+}
+
+.quote q::before {
+    display: block;
+    text-align: center;
+    float: left; height: 100%;
+    width: var(--size-quote-padding);
+}
+
+.quote q::after {
+    content: '';
+}
+
+.quote .author {
+    position: absolute;
+    color: var(--color-background-generic);
+    bottom: 0px; left: 0px;
+    padding: var(--size-quote-padding);
+}
+
+.quote .author::after {
+    content: '  \01F994';
+}
+
+#grid-container {
+    display: grid;
+    grid-template-columns: repeat(var(--size-number-columns), calc(var(--size-maximum-width)  / var(--size-number-columns)));
+    grid-template-rows:    repeat(var(--size-number-rows),    calc(var(--size-maximum-height) / var(--size-number-rows)));
+}
+
+#grid-container .grid-item {
+    height: 100%; width: 100%;
+    padding: var(--size-generic-padding);
+    box-sizing: border-box;
+    scroll-snap-align: center;
+}
+
+.grid-item-inner {
+    position: relative;
+    height: 100%; width: 100%;
+    box-sizing: border-box;
+    /* background-color: white; */
+    /* color: black; */
+    /* border: 15px solid black; */
+}
+
+@media screen {
+    html {
+        scroll-snap-type: both mandatory;
+    }
+
+    /* Filtering system */
+
+    /* Show navigation when tabbing through it */
+    .filter:focus ~ header #main-nav { visibility: visible; }
+
+    /* By default, all grid-items are shown, but as soon as we select one, we will hide everything */
+    .filter:checked ~ #grid-container > * { display: none; }
+
+    /* For the selected filter, show the corresponding grid-items, highlight the menu option when selected and when tabbing through it */
+    #filter-articles:checked ~ #grid-container > .article { display: block; }
+    #filter-articles:checked ~ header #main-nav label[for=filter-articles] { background-color: var(--color-nav-link-background-selected); }
+    #filter-articles:focus ~ header #main-nav label[for=filter-articles] { outline: var(--settings-outline-focus-generic); }
+
+    #filter-quotes:checked ~ #grid-container > .quote { display: block; }
+    #filter-quotes:checked ~ header #main-nav label[for=filter-quotes] { background-color: var(--color-nav-link-background-selected); }
+    #filter-quotes:focus ~ header #main-nav label[for=filter-quotes] { outline: var(--settings-outline-focus-generic); }
+
+    header {
+        --size-compass: calc(20 * var(--unit));
+        --size-compass-pointer-width: calc(0.15 * var(--size-compass));
+        --size-compass-padding: calc(0.5 * var(--size-generic-padding));
+        --size-nav-compass-padding: calc(5 * var(--unit));
+
+        position: fixed;
+        bottom: var(--size-compass-padding); right: var(--size-compass-padding);
+        z-index: 1;
+    }
+
+    header #main-nav {
+        visibility: hidden;
+        display: block;
+        background-color: white;
+        transform: translateY(calc(-1 * var(--size-nav-compass-padding)));
+    }
+
+    header #main-nav ul {
+        list-style: none;
+    }
+    
+    header #main-nav label {
+        --size-nav-item-padding: calc(2 * var(--unit));
+        --size-nav-item-height: 4em;
+
+        display: block;
+        width: 100%;
+        line-height: var(--size-nav-item-height);
+        background-color: black;
+        color: white;
+        text-align: center;
+
+        cursor: pointer;
+    }
+
+    header #main-nav label:hover  { background-color: var(--color-nav-link-background-hover) !important; }
+    header #main-nav label:active { background-color: var(--color-nav-link-background-active) !important; }
+
+    header #toggle-nav:checked ~ #main-nav { visibility: visible; }
+    header #toggle-nav:checked ~ #compass { animation: none; }
+    header #toggle-nav:focus ~ #compass { outline: var(--settings-outline-focus-generic); }
+
+    #compass {
+        --duration-compass-pulse-animation: 1s;
+
+        display: block;
+        width: var(--size-compass); height: var(--size-compass);
+        border-radius: 50%;
+        background-color: black;
+        color: white;
+
+        animation: pulse var(--duration-compass-pulse-animation) both infinite alternate;
+    }
+
+    #compass-target {
+        position: absolute;
+        top: 50px;
+    }
+
+    #compass #compass-pointer {
+        --rotation-compass-pointer-start: 0deg;
+        --rotation-compass-pointer-end: 500deg;
+
+        --duration-compass-pointer-animation: 2s;
+
+        margin: auto;
+        background: linear-gradient(var(--color-compass-pointer) 50%, white 50%);
+        height: 100%; width: var(--size-compass-pointer-width);
+        clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+
+        animation: give-direction var(--duration-compass-pointer-animation) both infinite alternate;
+        box-shadow: white 2px 2px 5px;
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: black 0px 0px 5px;
+        }
+        
+        100% {
+            box-shadow: black 0px 0px 15px;
+        }
+    }
+
+    @keyframes give-direction {
+        0% {
+            transform: rotate(var(--rotation-compass-pointer-start));
+        }
+
+        100% {
+            transform: rotate(var(--rotation-compass-pointer-end));
+        }
+    }
+
+    svg {
+        position: absolute;
+        top: 0px; left: 0px;
+        width: var(--size-maximum-width); height: var(--size-maximum-height);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    path {
+        fill: none;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: 10px;
+        stroke-dasharray: 12;
+        vector-effect: non-scaling-stroke;
+    }
+}
+
+@media print {
+
+}

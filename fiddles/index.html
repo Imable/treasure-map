@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css"/>
+        <script src="script.js"></script>
+        <title>Exploring</title>
+    </head>
+    
+    <body>
+        <input id="filter-articles" class="filter hidden-checkbox" type="checkbox" tabindex="2">
+        <input id="filter-quotes" class="filter hidden-checkbox" type="checkbox" tabindex="3">
+
+        <header id="header">
+            <input id="toggle-nav" class="hidden-checkbox" type="checkbox" tabindex="1">
+            <nav id="main-nav">
+                <ul>
+                    <li>
+                        <label for="filter-articles" class="route-waypoint-changer">Articles</label>
+                    </li>
+                    <li>
+                        <label for="filter-quotes" class="route-waypoint-changer">Quotes</label>
+                    </li>
+                </ul>
+            </nav>
+            <!-- <h1>you're able to explore.</h1> -->
+            <label id="compass" for="toggle-nav">
+                <div id="compass-pointer"></div>
+            </label>
+        </header>
+
+        <main id="grid-container">
+            <section class="grid-item article route-waypoint">
+                <div class="grid-item-inner">
+                    Home
+                </div>
+                <div id="compass-target"></div>
+            </section>
+    
+            <section class="grid-item quote">
+                <div class="grid-item-inner">
+                    <q>
+                        The mystery that attends every journey is how the traveler reached the starting point.
+                    </q>
+                    <span class="author">Louise Bogan</span>
+                </div>
+            </section>
+    
+            <section class="grid-item">
+                <div class="grid-item-inner route-waypoint">
+                    <p>
+                        Part nerd, part outdoorsman, a little bit country and a little rock ‘n’ roll – Quintin somehow managed to craft not only a personality out of opposing forces, but also a career blending UX and Visual Design. When not designing killer products with the fine men and women at Rally Interactive, Quintin can be found in the wild with his two kids.
+                    </p>
+                </div>
+            </section>
+
+            <section class="grid-item">
+                <div class="grid-item-inner">
+                    <a href="http://sachagreif.com/">Component based site</a> 
+                </div>
+            </section>
+
+            <section class="grid-item article">
+                <div class="grid-item-inner">
+                    Test2
+                </div>
+            </section>
+
+            <section class="grid-item article">
+                <div class="grid-item-inner route-waypoint">
+                    Test3
+                </div>
+            </section>
+        </main>
+    </body>
+</html>
