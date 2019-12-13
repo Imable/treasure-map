@@ -1,0 +1,15 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "sergey",
+    "dev": "sergey --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sergey": "0.0.11"
+  }
+}

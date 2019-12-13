@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <sergey-import src="head">
+      <sergey-template name="page-title">
+        <sergey-slot name="title"/>
+      </sergey-template>
+      <sergey-template name="page-import">
+        <sergey-slot name="import"/>
+      </sergey-template>
+    </sergey-import>
+  </head>
+
+  <body>
+    <sergey-import src="header"/>
+
+    <main id="grid-container">
+      <sergey-slot name="main"/>
+    </main>
+
+    <sergey-import src="footer"/>
+  </body>
+
+</html>
