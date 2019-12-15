@@ -17,9 +17,12 @@ class RouteManager {
     createRoute () {
         console.log('calcRoute');
         this.clearRoute();
-        var svg = this.prepareRoute();
-        var path = this.constructRouteBezier();
-        this.wrapRoute(svg, path);
+        const points         = this.getPoints();
+        var svg              = this.prepareRoute();
+        var path             = this.constructRouteBezier(points);
+        var extremityCircles = this.constructExtremityCircles(points);
+        var matchedEvents    = this.constructMatchedEvents();
+        this.wrapRoute(svg, [path, extremityCircles, matchedEvents]);
     }
 
     clearRoute () {
@@ -35,9 +38,24 @@ class RouteManager {
         return svg;
     }
 
-    constructRouteBezier () {
+    constructExtremityCircles (points) {
+        if (points.length < 1) return []
+
+        const extremityPoints = [points[0], points[points.length - 1]]
+        var extremityCircles = [];
+
+        for (var point of extremityPoints) {
+            var element = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            element.setAttributeNS(null, 'cx', point.x);
+            element.setAttributeNS(null, 'cy', point.y);
+            element.setAttributeNS(null, 'r', 20);
+            extremityCircles.push(element);
+        }
+        return extremityCircles
+    }
+
+    constructRouteBezier (points) {
         var element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        var points = this.getPoints();
         var route = points.reduce(function (path, point, index, points) {
             return index === 0 ? `M ${point.x},${point.y}` : `${path} ${Curve.getCurve(point, index, points)}`
         }, '');
@@ -46,21 +64,74 @@ class RouteManager {
     }
 
     getPoints () {
-        const waypoints = document.getElementsByClassName('route-waypoint');
+        // const extremityPoints = this.getExtremityPoints();
+        const waypoints  = document.getElementsByClassName('route-waypoint');
         var points = []
 
+        // this.addPointToWaypoints(extremityPoints[0], points);
         for (var waypoint of waypoints) {
-            // If element is hidden, offset height will be 0
-            if (waypoint.offsetHeight === 0) continue;
-            var point = Locator.getAbsoluteLocationOfElement(waypoint);
-            points.push(point);
+            this.addPointToWaypoints(waypoint, points);
         }
-        
+        // this.addPointToWaypoints(extremityPoints[1], points);
+
         return points;
     }
 
-    wrapRoute (svg, path) {
-        svg.appendChild(path);
+    // getExtremityPoints () {
+    //     const startpoint = document.getElementById('route-waypoint-start');
+    //     const endpoint   = document.getElementById('route-waypoint-end');
+    //     return [startpoint, endpoint]
+    // }
+
+    addPointToWaypoints (waypoint, points) {
+        // If element is hidden, offset height will be 0
+        if (waypoint.offsetHeight === 0) return points;
+        var point = Locator.getAbsoluteLocationOfElement(waypoint);
+        return points.push(point);
+    }
+
+    constructMatchedEvents () {
+        var matchedEvents = []
+        const waypoints = document.getElementsByClassName('route-waypoint');
+        for (var waypoint of waypoints) {
+            const match = this.getMatchedElement(waypoint);
+            if (!match) continue;
+            matchedEvents.push(this.constructMatchedDot(waypoint));
+            matchedEvents.push(this.constructLineBetweenMatchedElements(waypoint, match));
+        }
+        return matchedEvents
+    }
+
+    getMatchedElement(waypoint) {
+        const match = waypoint.getAttribute("for");
+        const matchedElement = document.getElementById(match);
+        return matchedElement
+    }
+
+    constructMatchedDot (waypoint) {
+        const point = Locator.getAbsoluteLocationOfElement(waypoint);
+        var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttributeNS(null, 'cx', point.x);
+        circle.setAttributeNS(null, 'cy', point.y);
+        circle.setAttributeNS(null, 'r', 20);
+        return circle
+    }
+
+    constructLineBetweenMatchedElements (waypoint, element) {
+        const wPoint = Locator.getAbsoluteLocationOfElement(waypoint);
+        const ePoint = Locator.getAbsoluteLocationOfElement(element);
+        
+        var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttributeNS(null, 'x1', wPoint.x);
+        line.setAttributeNS(null, 'y1', wPoint.y);
+        line.setAttributeNS(null, 'x2', ePoint.x);
+        line.setAttributeNS(null, 'y2', ePoint.y);
+       
+        return line
+    }
+
+    wrapRoute (svg, elements) {
+        elements.flat(2).map(x => svg.appendChild(x))
         document.body.appendChild(svg);
     }
 }
