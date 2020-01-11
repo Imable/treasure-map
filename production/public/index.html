@@ -54,6 +54,7 @@
   <body>
     <input id="filter-articles" class="filter hidden-checkbox" type="checkbox" tabindex="2">
 <input id="filter-quotes" class="filter hidden-checkbox" type="checkbox" tabindex="3">
+<!-- TODO Filter on work -->
 
 <header id="header">
     <input id="toggle-nav" class="hidden-checkbox" type="checkbox" tabindex="1">
@@ -86,34 +87,33 @@
   </body>
 
 </html> -->
-        <section class="grid-item route-waypoint article">
+        <section class="grid-item article">
             <div id="landing" class="grid-item-inner">
-                <span for="now" class="route-waypoint"></span>
-                <article id="now" class="route-event">
-                    <span class="datetime">Now</span>
-                    <h2>Who I am</h2>
-                    <p>
-                        A computer scientist with a strong emphasis on accessibility
-                    </p>
-                </article>
-
-                <!-- <h1>I am able.</h1> -->
-
+                <h1>This is the journey of a <span class="no-break-line">web designer.</span></h1>
+                <div class="route-waypoint"></div>
+                <div class="route-waypoint"></div>
             </div>
-            <div id="compass-target"></div>
         </section>
 
-        <section class="grid-item quote">
-            <div class="grid-item-inner">
-                <q>
-                    The mystery that attends every journey is how the traveler reached the starting point.
-                </q>
-                <span class="author">Louise Bogan</span>
+        <section class="grid-item work">
+            <div id="current" class="grid-item-inner">
+                <span for="now" class="route-waypoint"></span>
+                <article id="now" class="route-event">
+                    <span class="time">January 2020</span>
+                    <span class="topic">Work</span>
+                    <h2 class="title">Full Stack Developer</h2>
+                    <span class="organisation">Zero Foodwaste</span>
+                    <span class="location">Utrecht</span>
+                    <p class="content">
+                        A computer scientist with a strong emphasis on accessibility. That is what I can call myself. I have a lot of experience with Vue now. What I liked most here was getting the bread out of the freezer.
+                    </p>
+                </article>
+                <div id="compass-target"></div>
             </div>
         </section>
 
         <section class="grid-item">
-            <div class="grid-item-inner route-waypoint">
+            <div class="grid-item-inner">
                 <p>
                     Part nerd, part outdoorsman, a little bit country and a little rock ‘n’ roll – Quintin somehow managed to craft not only a personality out of opposing forces, but also a career blending UX and Visual Design. When not designing killer products with the fine men and women at Rally Interactive, Quintin can be found in the wild with his two kids.
                 </p>

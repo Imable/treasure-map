@@ -15,7 +15,6 @@ class RouteManager {
     }
 
     createRoute () {
-        console.log('calcRoute');
         this.clearRoute();
         const points         = this.getPoints();
         var svg              = this.prepareRoute();
@@ -43,14 +42,10 @@ class RouteManager {
 
         const extremityPoints = [points[0], points[points.length - 1]]
         var extremityCircles = [];
-
         for (var point of extremityPoints) {
-            var element = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            element.setAttributeNS(null, 'cx', point.x);
-            element.setAttributeNS(null, 'cy', point.y);
-            element.setAttributeNS(null, 'r', 20);
-            extremityCircles.push(element);
+            extremityCircles.push(Shaper.createCircle(point));
         }
+
         return extremityCircles
     }
 
@@ -64,24 +59,15 @@ class RouteManager {
     }
 
     getPoints () {
-        // const extremityPoints = this.getExtremityPoints();
         const waypoints  = document.getElementsByClassName('route-waypoint');
         var points = []
 
-        // this.addPointToWaypoints(extremityPoints[0], points);
         for (var waypoint of waypoints) {
             this.addPointToWaypoints(waypoint, points);
         }
-        // this.addPointToWaypoints(extremityPoints[1], points);
 
         return points;
     }
-
-    // getExtremityPoints () {
-    //     const startpoint = document.getElementById('route-waypoint-start');
-    //     const endpoint   = document.getElementById('route-waypoint-end');
-    //     return [startpoint, endpoint]
-    // }
 
     addPointToWaypoints (waypoint, points) {
         // If element is hidden, offset height will be 0
@@ -110,24 +96,13 @@ class RouteManager {
 
     constructMatchedDot (waypoint) {
         const point = Locator.getAbsoluteLocationOfElement(waypoint);
-        var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttributeNS(null, 'cx', point.x);
-        circle.setAttributeNS(null, 'cy', point.y);
-        circle.setAttributeNS(null, 'r', 20);
-        return circle
+        return Shaper.createCircle(point);
     }
 
     constructLineBetweenMatchedElements (waypoint, element) {
-        const wPoint = Locator.getAbsoluteLocationOfElement(waypoint);
-        const ePoint = Locator.getAbsoluteLocationOfElement(element);
-        
-        var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttributeNS(null, 'x1', wPoint.x);
-        line.setAttributeNS(null, 'y1', wPoint.y);
-        line.setAttributeNS(null, 'x2', ePoint.x);
-        line.setAttributeNS(null, 'y2', ePoint.y);
-       
-        return line
+        const fromPoint = Locator.getAbsoluteLocationOfElement(waypoint);
+        const toPoint   = Locator.getAbsoluteLocationOfElement(element);
+        return Shaper.createLine(fromPoint, toPoint);
     }
 
     wrapRoute (svg, elements) {
@@ -175,7 +150,7 @@ class CompassManager {
 
     HandleScrollDebouncer () {
         if (this.stillScrolling) clearTimeout(this.stillScrolling); 
-        this.stillScrolling = setTimeout(this.HandleScroll.bind(this), 75);
+        this.stillScrolling = setTimeout(this.HandleScroll.bind(this), 50);
     }
 
     HandleScroll () {  
@@ -214,6 +189,25 @@ class ElementModifier {
 
     static rfElem(node) {
         node.remove()
+    }
+}
+
+class Shaper {
+    static createCircle (point) {
+        var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttributeNS(null, 'cx', point.x);
+        circle.setAttributeNS(null, 'cy', point.y);
+        circle.setAttributeNS(null, 'r', 20);
+        return circle
+    }
+
+    static createLine (fromPoint, toPoint) {
+        var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttributeNS(null, 'x1', fromPoint.x);
+        line.setAttributeNS(null, 'y1', fromPoint.y);
+        line.setAttributeNS(null, 'x2', toPoint.x);
+        line.setAttributeNS(null, 'y2', toPoint.y);
+        return line
     }
 }
 
@@ -332,29 +326,29 @@ class Scroller {
         this.lastScrollPosition = Scroller.getCurrentScrollPosition();
     }
 
-    static getScrollDirection () {
-        var scrollDirection = {
-            x: 0,
-            y: 0
-        };
-        var currentScrollPosition = Scroller.getCurrentScrollPosition();
+    // static getScrollDirection () {
+    //     var scrollDirection = {
+    //         x: 0,
+    //         y: 0
+    //     };
+    //     var currentScrollPosition = Scroller.getCurrentScrollPosition();
 
-        if (currentScrollPosition.x >= this.lastScrollPosition.x) {
-            scrollDirection.x = 1;
-        } else {
-            scrollDirection.x = -1;
-        }
+    //     if (currentScrollPosition.x >= this.lastScrollPosition.x) {
+    //         scrollDirection.x = 1;
+    //     } else {
+    //         scrollDirection.x = -1;
+    //     }
 
-        if (currentScrollPosition.y >= this.lastScrollPosition.y) {
-            scrollDirection.y = 1;
-        } else {
-            scrollDirection.y = -1;
-        }
+    //     if (currentScrollPosition.y >= this.lastScrollPosition.y) {
+    //         scrollDirection.y = 1;
+    //     } else {
+    //         scrollDirection.y = -1;
+    //     }
 
-        this.lastScrollPosition = currentScrollPosition
+    //     this.lastScrollPosition = currentScrollPosition
 
-        return scrollDirection
-    }
+    //     return scrollDirection
+    // }
 
     static getCurrentScrollPosition () {
         this.lastScrollPosition = { 

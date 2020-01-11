@@ -17,20 +17,31 @@
     --size-text-generic: calc(12px + 0.5 * var(--unit));
     --size-text-quote: calc(6 * var(--unit));
 
-    --color-compass-pointer: rgb(201, 91, 91);
+    --size-route-event-padding: calc(2 * var(--unit));
+    --size-route-event-box-shadow-distance: var(--size-route-event-padding);
+
+    --color-compass-pointer-target: rgb(201, 91, 91);
+    --color-compass-pointer-anti: rgb(255, 255, 255);
+    --color-compass-background: rgb(0, 0, 0);
     
-    --color-nav-link-background-hover: var(--color-compass-pointer);
+    --color-nav-link-background: rgb(0, 0, 0);
+    --color-nav-link-background-hover: var(--color-compass-pointer-target);
     --color-nav-link-background-active: rgb(117, 51, 51);
     --color-nav-link-background-selected: rgb(156, 66, 66);
-    --color-background-generic: rgb(250, 202, 69);
+    --color-nav-link-text: white;
+
+    --color-route-event-background: rgb(255,255,255);
+
+    --color-background-generic: rgb(247, 209, 151);
+    --color-text-generic: rgb(0, 0, 0);
 
     --settings-outline-focus-generic: rgb(59, 153, 252) auto 5px;
 }
 
 @font-face {
-    font-family: 'ginora_sansbold';
-    src: url('../fonts/ginorasans-webfont.woff2') format('woff2'),
-         url('../fonts/ginorasans-webfont.woff') format('woff');
+    font-family: 'ginora_sansregular';
+    src: url('../fonts/ginora_sans_regular-webfont.woff2') format('woff2'),
+         url('../fonts/ginora_sans_regular-webfont.woff') format('woff');
 }
 
 :root {
@@ -55,11 +66,15 @@ html {
 }
 
 h1, h2, h3, h4, h5, q {
-    font-family: ginora_sansbold, 'Open Sans', Arial, sans-serif;
+    font-family: ginora_sansregular, 'Open Sans', Arial, sans-serif;
 }
 
 .hidden-checkbox {
     opacity: 0;
+}
+
+.no-break-line {
+    display: inline-block;
 }
 
 /* If you want to change the size of a grid-item
@@ -92,35 +107,85 @@ h1, h2, h3, h4, h5, q {
 }
 
 .route-event {
-    display: block;
-    background-color: white;
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: min-content min-content min-content min-content;
+    grid-template-areas:
+    "time time time topic"
+    "title title title title"
+    "organisation organisation organisation location"
+    "content content content content";
+    width: calc(300px - 6 * (100vw - 400px) / 800); height: min-content;
+    box-sizing: border-box;
+    padding: var(--size-route-event-padding);
+    background-color: var(--color-route-event-background);
+    box-shadow: var(--size-route-event-box-shadow-distance) var(--size-route-event-box-shadow-distance) 0px rgba(0, 0, 0, 0.2);
 }
 
-span.route-waypoint {
+.route-event > * {
+    /* padding-bottom: calc(0.5 * var(--size-route-event-padding)); */
+}
+
+.route-event .time {
+    grid-area: time;
+    font-style: italic;
+}
+
+.route-event .topic {
+    grid-area: topic;
+    font-style: italic;
+    justify-self: right;
+}
+
+.route-event .title {
+    grid-area: title;
+}
+
+.route-event .organisation {
+    grid-area: organisation;
+    font-style: italic;
+}
+
+.route-event .organisation::before {
+    content: '@';
+}
+
+.route-event .location {
+    grid-area: location;
+    font-style: italic;
+}
+
+.route-event .content {
+    grid-area: content;
+}
+
+.route-waypoint {
+    position: absolute;
     display: block;
     width: 12px; height: 12px;
 }
 
-#landing {
-    font-size: calc(var(--size-text-generic) * 2);    
-}
+#landing .route-waypoint:nth-child(2) { top: 70%; left: 40%; }
+#landing .route-waypoint:nth-child(3) { top: 30%; left: 60%; }
 
 #landing h1 {
+    font-size: calc(var(--size-text-generic) * 2);    
     position: absolute;
-    top: 50%; left: 50%;
+    top: 40%; left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
 }
 
-#landing .route-event {
-    position: absolute;
-    top: 20%; left: 60%;
+#current .route-event {
+    top: 20%; left: 50%;
+    transform: translateX(-50%);
     /* height: 30px; width: 10px; */
 }
 
-#landing .route-waypoint {
+#current .route-waypoint {
     position: absolute;
-    top: 70%; left: 50%;
+    top: 70%; left: 30%;
 }
 
 @media screen {
@@ -159,7 +224,7 @@ span.route-waypoint {
     header #main-nav {
         visibility: hidden;
         display: block;
-        background-color: white;
+        /* background-color: white; */
         transform: translateY(calc(-1 * var(--size-nav-compass-padding)));
     }
 
@@ -174,8 +239,8 @@ span.route-waypoint {
         display: block;
         width: 100%;
         line-height: var(--size-nav-item-height);
-        background-color: black;
-        color: white;
+        background-color: var(--color-nav-link-background);
+        color: var(--color-nav-link-text);
         text-align: center;
 
         cursor: pointer;
@@ -194,9 +259,10 @@ span.route-waypoint {
         display: block;
         width: var(--size-compass); height: var(--size-compass);
         border-radius: 50%;
-        background-color: black;
-        color: white;
+        background-color: var(--color-compass-background);
+        /* color: white; */
 
+        /* box-shadow: rgba(0, 0, 0, 0.205) 15px 15px 0px; */
         animation: pulse var(--duration-compass-pulse-animation) both infinite alternate;
     }
 
@@ -213,21 +279,21 @@ span.route-waypoint {
         --duration-compass-pointer-animation: 2s;
 
         margin: auto;
-        background: linear-gradient(var(--color-compass-pointer) 50%, white 50%);
+        background: linear-gradient(var(--color-compass-pointer-target) 50%, var(--color-compass-pointer-anti) 50%);
         height: 100%; width: var(--size-compass-pointer-width);
         clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
 
         animation: give-direction var(--duration-compass-pointer-animation) both infinite alternate;
-        box-shadow: white 2px 2px 5px;
+        /* box-shadow: white 2px 2px 5px; */
     }
 
     @keyframes pulse {
         0% {
-            box-shadow: black 0px 0px 5px;
+            box-shadow: rgba(177, 123, 123, 0.205) 0px 0px 0px;
         }
         
         100% {
-            box-shadow: black 0px 0px 15px;
+            box-shadow: rgba(0, 0, 0, 0.205) var(--size-route-event-box-shadow-distance) var(--size-route-event-box-shadow-distance) 0px;
         }
     }
 
@@ -247,6 +313,7 @@ span.route-waypoint {
         width: var(--size-maximum-width); height: var(--size-maximum-height);
         pointer-events: none;
         z-index: -1;
+        vector-effect: non-scaling-stroke;
     }
 
     path {
@@ -260,7 +327,7 @@ span.route-waypoint {
 
     circle {
         fill: #fff;
-        vector-effect: non-scaling-stroke;
+        /* vector-effect: non-scaling-stroke; */
     }
 
     line {
