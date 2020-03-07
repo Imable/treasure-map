@@ -17,7 +17,8 @@
     --size-text-generic: calc(12px + 0.5 * var(--unit));
     --size-text-quote: calc(6 * var(--unit));
 
-    --size-route-event-padding: calc(2 * var(--unit));
+    --size-route-event-padding: calc(0.25 * var(--size-generic-padding));
+    --size-route-event-padding-between: calc(0.75 * var(--size-route-event-padding));
     --size-route-event-box-shadow-distance: var(--size-route-event-padding);
 
     --color-compass-pointer-target: rgb(201, 91, 91);
@@ -33,7 +34,9 @@
     --color-route-event-background: rgb(255,255,255);
 
     --color-background-generic: rgb(247, 209, 151);
+    --color-accent-generic: rgb(153, 151, 247);
     --color-text-generic: rgb(0, 0, 0);
+    --color-drop-shadow-generic: rgba(0, 0, 0, 0.2);
 
     --settings-outline-focus-generic: rgb(59, 153, 252) auto 5px;
 }
@@ -69,12 +72,23 @@ h1, h2, h3, h4, h5, q {
     font-family: ginora_sansregular, 'Open Sans', Arial, sans-serif;
 }
 
+p {
+    line-height: 1.25em;
+}
+
 .hidden-checkbox {
     opacity: 0;
 }
 
 .no-break-line {
     display: inline-block;
+}
+
+.emphasis {
+    /* font-weight: bold; */
+    color: var(--color-accent-generic);
+    /* text-decoration: underline; */
+    text-transform: uppercase;
 }
 
 /* If you want to change the size of a grid-item
@@ -88,6 +102,7 @@ h1, h2, h3, h4, h5, q {
     display: grid;
     grid-template-columns: repeat(var(--size-number-columns), calc(var(--size-maximum-width)  / var(--size-number-columns)));
     grid-template-rows:    repeat(var(--size-number-rows),    calc(var(--size-maximum-height) / var(--size-number-rows)));
+    grid-auto-flow: row dense;
 }
 
 #grid-container .grid-item {
@@ -108,23 +123,45 @@ h1, h2, h3, h4, h5, q {
 
 .route-event {
     position: absolute;
+    top: 20%; left: 50%;
+    transform: translateX(-50%);
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: min-content min-content min-content min-content;
     grid-template-areas:
+    "image image image image"
+    "content content content content";
+    /* https://css-tricks.com/fun-tip-use-calc-to-change-the-height-of-a-hero-component/
+            At min viewport 
+                 |  Difference at min/max viewport 
+                 |         |   Difference of max and px definition of min viewport
+                 |         |            |      Difference of px definition of max and min viewport 
+                 |         |            |              |                                            */
+    width: calc(300px + (500 - 300)*(100vw - 350px)/(1200 - 350)); height: min-content;
+    box-sizing: border-box;
+    background-color: var(--color-route-event-background);
+    box-shadow: var(--size-route-event-box-shadow-distance) var(--size-route-event-box-shadow-distance) 0px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.25s ease;
+}
+
+.route-event div {
+    grid-area: content;
+    display: grid;
+    grid-template-areas: 
     "time time time topic"
     "title title title title"
     "organisation organisation organisation location"
     "content content content content";
-    width: calc(300px - 6 * (100vw - 400px) / 800); height: min-content;
-    box-sizing: border-box;
     padding: var(--size-route-event-padding);
-    background-color: var(--color-route-event-background);
-    box-shadow: var(--size-route-event-box-shadow-distance) var(--size-route-event-box-shadow-distance) 0px rgba(0, 0, 0, 0.2);
 }
 
-.route-event > * {
-    /* padding-bottom: calc(0.5 * var(--size-route-event-padding)); */
+.route-event:hover {
+    box-shadow: 0px 0px 0px var(--color-drop-shadow-generic);
+}
+
+.route-event .featured-image {
+    grid-area: image;
+    width: 100%;
 }
 
 .route-event .time {
@@ -132,7 +169,7 @@ h1, h2, h3, h4, h5, q {
     font-style: italic;
 }
 
-.route-event .topic {
+.route-event .topic, .route-event .location {
     grid-area: topic;
     font-style: italic;
     justify-self: right;
@@ -140,11 +177,13 @@ h1, h2, h3, h4, h5, q {
 
 .route-event .title {
     grid-area: title;
+    padding-top: var(--size-route-event-padding-between);
 }
 
 .route-event .organisation {
     grid-area: organisation;
     font-style: italic;
+    padding-top: calc(0.5 * var(--size-route-event-padding-between));
 }
 
 .route-event .organisation::before {
@@ -153,18 +192,48 @@ h1, h2, h3, h4, h5, q {
 
 .route-event .location {
     grid-area: location;
-    font-style: italic;
+    padding-top: calc(0.5 * var(--size-route-event-padding-between));
 }
 
 .route-event .content {
     grid-area: content;
+    padding-top: var(--size-route-event-padding-between);
 }
 
 .route-waypoint {
     position: absolute;
     display: block;
     width: 12px; height: 12px;
+    top: 70%; left: 48%;
 }
+
+.content-block {
+    position: absolute;
+    width: calc(300px + (500 - 300)*(100vw - 350px)/(1200 - 350)); height: min-content;
+    box-sizing: border-box;
+    background-color: var(--color-route-event-background);
+    box-shadow: var(--size-route-event-box-shadow-distance) var(--size-route-event-box-shadow-distance) 0px var(--color-drop-shadow-generic);
+}
+
+.content-block div {
+    padding: calc(2 * var(--size-route-event-padding));
+}
+
+.content-block div > *:nth-child(2) {
+    padding-top: var(--size-route-event-padding-between);
+}
+
+.content-block img {
+    width: 100%;
+}
+
+.unicode-icon {
+    transform: translateY(-3px);
+}
+
+/*********************
+ *       Pages       *
+ *********************/
 
 #landing .route-waypoint:nth-child(2) { top: 70%; left: 40%; }
 #landing .route-waypoint:nth-child(3) { top: 30%; left: 60%; }
@@ -177,15 +246,46 @@ h1, h2, h3, h4, h5, q {
     text-align: center;
 }
 
-#current .route-event {
+#zero-foodwaste .route-event {
     top: 20%; left: 50%;
     transform: translateX(-50%);
     /* height: 30px; width: 10px; */
 }
 
-#current .route-waypoint {
-    position: absolute;
+#zero-foodwaste .route-waypoint {
     top: 70%; left: 30%;
+}
+
+.center-block {
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#skills ul {
+    list-style: none;
+    display: grid;
+    grid-gap: calc(var(--size-generic-padding)/4);
+}
+
+#skills li {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    grid-template-areas: 
+        "icon title"
+        "description description";
+    grid-gap: calc(var(--size-generic-padding)/8);
+}
+
+#skills .skill-icon {
+    grid-area: icon;
+}
+
+#skills .skill-title {
+    grid-area: title;
+}
+
+#skills .skill-description {
+    grid-area: description;
 }
 
 @media screen {
@@ -202,6 +302,14 @@ h1, h2, h3, h4, h5, q {
     .filter:checked ~ #grid-container > * { display: none; }
 
     /* For the selected filter, show the corresponding grid-items, highlight the menu option when selected and when tabbing through it */
+    #filter-info:checked ~ #grid-container > .info { display: block; }
+    #filter-info:checked ~ header #main-nav label[for=filter-info] { background-color: var(--color-nav-link-background-selected); }
+    #filter-info:focus ~ header #main-nav label[for=filter-info] { outline: var(--settings-outline-focus-generic); }
+
+    #filter-work:checked ~ #grid-container > .work { display: block; }
+    #filter-work:checked ~ header #main-nav label[for=filter-work] { background-color: var(--color-nav-link-background-selected); }
+    #filter-work:focus ~ header #main-nav label[for=filter-work] { outline: var(--settings-outline-focus-generic); }
+
     #filter-articles:checked ~ #grid-container > .article { display: block; }
     #filter-articles:checked ~ header #main-nav label[for=filter-articles] { background-color: var(--color-nav-link-background-selected); }
     #filter-articles:focus ~ header #main-nav label[for=filter-articles] { outline: var(--settings-outline-focus-generic); }
@@ -233,7 +341,6 @@ h1, h2, h3, h4, h5, q {
     }
     
     header #main-nav label {
-        --size-nav-item-padding: calc(2 * var(--unit));
         --size-nav-item-height: 4em;
 
         display: block;
@@ -263,13 +370,19 @@ h1, h2, h3, h4, h5, q {
         /* color: white; */
 
         /* box-shadow: rgba(0, 0, 0, 0.205) 15px 15px 0px; */
-        animation: pulse var(--duration-compass-pulse-animation) both infinite alternate;
+        box-shadow: var(--size-route-event-box-shadow-distance) var(--size-route-event-box-shadow-distance) 0px var(--color-drop-shadow-generic);
+        transition: box-shadow 0.25s ease;
+        /* animation: pulse var(--duration-compass-pulse-animation) both infinite alternate; */
+    }
+
+    #compass:hover {
+        box-shadow: 0px 0px 0px var(--color-drop-shadow-generic);
     }
 
     #compass-target {
         /* display: inline; */
-        position: absolute;
-        top: 50px;
+        /* position: absolute;
+        top: 50px; */
     }
 
     #compass #compass-pointer {
@@ -287,7 +400,7 @@ h1, h2, h3, h4, h5, q {
         /* box-shadow: white 2px 2px 5px; */
     }
 
-    @keyframes pulse {
+    /* @keyframes pulse {
         0% {
             box-shadow: rgba(177, 123, 123, 0.205) 0px 0px 0px;
         }
@@ -295,7 +408,7 @@ h1, h2, h3, h4, h5, q {
         100% {
             box-shadow: rgba(0, 0, 0, 0.205) var(--size-route-event-box-shadow-distance) var(--size-route-event-box-shadow-distance) 0px;
         }
-    }
+    } */
 
     @keyframes give-direction {
         0% {

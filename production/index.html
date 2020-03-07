@@ -1,15 +1,22 @@
+<!-- 
+    Categories
+    - Info
+    - Skills
+    - Work
+    - Articles
+    - Quotes
+    
+    Pages
+    - About me
+ -->
+
 <sergey-import src="template">
+
     <sergey-template name="title">
         The journey
     </sergey-template>
 
     <sergey-template name="main">
-        <!-- <sergey-import src="grid-item">
-            <sergey-template name="classes">article route-waypoint</sergey-template>
-            <sergey-template name="content">
-                Test
-            </sergey-template>
-        </sergey-import> -->
         <section class="grid-item article">
             <div id="landing" class="grid-item-inner">
                 <h1>This is the journey of a <span class="no-break-line">web designer.</span></h1>
@@ -17,21 +24,131 @@
                 <div class="route-waypoint"></div>
             </div>
         </section>
+        
+        <section class="grid-item info">
+            <div id="about-me" class="grid-item-inner">
+                <article class="content-block center-block">
+                    <img id="compass-target" src="assets/img/about-me/headshot.jpg"/>
+                    <div>
+                        <h2>The navigator</h2>
+                        <p>
+                            I am able. An <span class="emphasis">imagineer</span>. A Dutch design. 
+                            I think inside the box of possibilities; it is just a very large box. 
+                            I run, hike, swim and bike. I make music, wages, apps, webpages.
+                            And I do it all running on chocolate sprinkles and coffee.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
 
         <section class="grid-item work">
-            <div id="current" class="grid-item-inner">
-                <span for="now" class="route-waypoint"></span>
-                <article id="now" class="route-event">
-                    <span class="time">January 2020</span>
-                    <span class="topic">Work</span>
-                    <h2 class="title">Full Stack Developer</h2>
-                    <span class="organisation">Zero Foodwaste</span>
-                    <span class="location">Utrecht</span>
-                    <p class="content">
-                        A computer scientist with a strong emphasis on accessibility. That is what I can call myself. I have a lot of experience with Vue now. What I liked most here was getting the bread out of the freezer.
-                    </p>
+            <div id="zero-foodwaste" class="grid-item-inner">
+                <span for="zrfwst" class="route-waypoint"></span>
+                <article id="zrfwst" class="route-event">
+                    <!-- <img class="featured-image" src="assets/img//about-me/headshot.jpg"> -->
+                    <div>
+                        <span class="time">January 2020</span>
+                        <span class="topic">Work</span>
+                        <h2 class="title">Full Stack Developer</h2>
+                        <span class="organisation">Zero Foodwaste</span>
+                        <span class="location">Utrecht</span>
+                        <p class="content">
+                            A computer scientist with a strong emphasis on accessibility. 
+                            That is what I can call myself. I have a lot of experience with Vue now. 
+                            What I liked most here was getting the bread out of the freezer.
+                        </p>
+                    </div>
                 </article>
-                <div id="compass-target"></div>
+            </div>
+        </section>
+
+        <section class="grid-item work">
+            <div id="rivm-iras" class="grid-item-inner">
+                <span for="rvmrs" class="route-waypoint"></span>
+                <article id="rvmrs" class="route-event">
+                    <div>
+                        <span class="time">February 2019 - June 2019</span>
+                        <span class="topic">Work</span>
+                        <h2 class="title">Chair </h2>
+                        <span class="organisation">RIVM/IRAS/Utrecht University</span>
+                        <span class="location">Utrecht</span>
+                        <p class="content">
+                            In a team of 10 students, we developed the next iteration of the Modelling Environmental Exposure System project.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="grid-item skills">
+            <div id="skills" class="grid-item-inner">
+                <article class="content-block center-block">
+                    <!-- <img id="compass-target" src="assets/img/about-me/headshot.jpg"/> -->
+                    <div>
+                        <h2>Skills</h2>
+                        <ul>
+                            <li>
+                                <span class="skill-icon">
+                                    ☕
+                                </span>
+                                <h3 class="skill-title">
+                                    A skill
+                                </h3>
+                                <span class="skill-description">
+                                    This is a description of a skill. Short, brief, to the point, but very sexy.
+                                </span>
+                            </li>
+                            <li>
+                                <span class="skill-icon">
+                                    ☕
+                                </span>
+                                <h3 class="skill-title">
+                                    A skill
+                                </h3>
+                                <span class="skill-description">
+                                    This is a description of a skill. Short, brief, to the point, but very sexy.
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="grid-item work">
+            <div id="cachet" class="grid-item-inner">
+                <span for="ccht" class="route-waypoint"></span>
+                <article id="ccht" class="route-event">
+                    <div>
+                        <span class="time">March 2013 - October 2017</span>
+                        <span class="topic">Work</span>
+                        <h2 class="title">Model</h2>
+                        <span class="organisation">Cachet Models International</span>
+                        <span class="location">Eindhoven</span>
+                        <p class="content">
+                            Secretly I didn't really do a lot, but I was on their website, so technically I worked there!
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="grid-item work">
+            <div id="dendron" class="grid-item-inner">
+                <span for="dndrn" class="route-waypoint"></span>
+                <article id="dndrn" class="route-event">
+                    <div>
+                        <span class="time">September 2014 - June 2016</span>
+                        <span class="topic">Work</span>
+                        <h2 class="title">English Tutor</h2>
+                        <span class="organisation">Dendron College</span>
+                        <span class="location">Horst</span>
+                        <p class="content">
+                            Pupil Tutor in the English language
+                        </p>
+                    </div>
+                </article>
             </div>
         </section>
 
@@ -46,18 +163,6 @@
         <section class="grid-item">
             <div class="grid-item-inner">
                 <a href="http://sachagreif.com/">Component based site</a> 
-            </div>
-        </section>
-
-        <section class="grid-item article">
-            <div class="grid-item-inner">
-                Test2
-            </div>
-        </section>
-
-        <section class="grid-item article">
-            <div class="grid-item-inner route-waypoint">
-                Test3
             </div>
         </section>
     </sergey-template>
