@@ -1,6 +1,6 @@
 # Go on my journey
 
-A personal website showcasing the power of CSS. Enables visitors to explore me by going on a journey along the marked path.
+A personal website showcasing the power of CSS and SVG. Enables visitors to explore me by going on a journey along the marked path.
 
 # Framework usage
 
@@ -14,3 +14,7 @@ Makes the element part of the dashed trail. The trail snaps to the center of the
 
 *.article, .quote*
 Adding these classes to a *.grid-item* makes them show up when selecting the corresponding tab in the navigation bar.
+
+# Used Technology
+
+This website is created using the Sergey static site generator.
