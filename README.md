@@ -18,3 +18,8 @@ Adding these classes to a *.grid-item* makes them show up when selecting the cor
 # Used Technology
 
 This website is created using the Sergey static site generator.
+
+# Showcase
+
+![Showcase of the website on mobile](https://github.com/Imable/treasure-map/blob/master/captures/Mobile.gif "Showcase on mobile")
+![Showcase of the website on desktop](https://github.com/Imable/treasure-map/blob/master/captures/Desktop.gif "Showcase on desktop")
